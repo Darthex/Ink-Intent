@@ -1,5 +1,5 @@
-function App() {
+function Root() {
 	return <div>Project Setup</div>;
 }
 
-export default App;
+export default Root;
