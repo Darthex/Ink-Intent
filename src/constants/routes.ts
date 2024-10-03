@@ -1,3 +1,5 @@
 export const ROUTES = {
-	HOME: '/',
+	HOME: '/home',
+	DASHBOARD: '/',
+	AUTH: '/auth',
 };

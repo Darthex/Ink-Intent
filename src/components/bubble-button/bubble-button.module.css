@@ -1,0 +1,14 @@
+.button {
+	height: 35px;
+	min-width: 110px;
+	outline: none;
+	border: none;
+	background-color: transparent;
+}
+
+.button:hover {
+	cursor: pointer;
+	transform: scale(101%);
+	/*transition: 100ms ease-in-out;*/
+	border-bottom: 1px white solid;
+}

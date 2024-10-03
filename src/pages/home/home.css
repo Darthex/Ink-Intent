@@ -1,0 +1,69 @@
+.container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.title {
+	font-family: 'Pacifico', cursive;
+	user-select: none;
+	font-size: 30px;
+	position: absolute;
+}
+
+.action-buttons {
+	align-self: self-start;
+	margin-left: auto;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.pop-enter {
+	opacity: 0;
+	transform: scale(0.9);
+}
+
+.pop-enter-active {
+	opacity: 1;
+	transform: translateX(0);
+	transition:
+		opacity 300ms,
+		transform 300ms;
+}
+
+.pop-exit {
+	opacity: 1;
+}
+
+.pop-exit-active {
+	opacity: 0;
+	transform: scale(0.9);
+	transition:
+		opacity 300ms,
+		transform 300ms;
+}
+
+.background {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+	background: rgb(43, 51, 73);
+	background: linear-gradient(
+		90deg,
+		rgba(43, 51, 73, 1) 0%,
+		rgba(143, 78, 81, 1) 35%,
+		rgba(246, 114, 75, 1) 100%
+	);
+}
+
+@media screen and (max-width: 480px) {
+	.action-buttons {
+		margin-left: 0;
+	}
+}

@@ -1,0 +1,40 @@
+.container {
+	height: 100%;
+	background-color: #8f4e51;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.actionButtons {
+	display: flex;
+	gap: 30px;
+	justify-content: space-between;
+}
+
+.formContainer {
+	/*width: 100%;*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.formBody {
+	width: 40%;
+	max-width: 650px;
+}
+
+.loginContainer {
+	/*width: 50%;*/
+	height: 300px;
+	background-color: #2b3349;
+}
+
+.registerContainer {
+	/*width: 50%;*/
+	height: 300px;
+	background-color: #f6724b;
+}
