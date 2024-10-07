@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
-import BubbleButton from '../../components/bubble-button/bubble-button.tsx';
+import BubbleLink from '../../components/bubble-link/bubble-link.tsx';
+import Inker from '../../components/inker/inker.tsx';
+
 import { ROUTES } from '../../constants/routes.ts';
 
 import './home.css';
@@ -25,10 +27,10 @@ const Home = () => {
 		<div className="container">
 			<div className="background"></div>
 			<div className="action-buttons">
-				<BubbleButton onClick={() => navigate(ROUTES.AUTH)}>Login</BubbleButton>
-				<BubbleButton onClick={() => navigate(ROUTES.DASHBOARD)}>
+				<BubbleLink onClick={() => navigate(ROUTES.AUTH)}>Login</BubbleLink>
+				<BubbleLink onClick={() => navigate(ROUTES.DASHBOARD)}>
 					Get Started
-				</BubbleButton>
+				</BubbleLink>
 			</div>
 			<CSSTransition
 				in={popTitle}
@@ -37,9 +39,7 @@ const Home = () => {
 				classNames="pop"
 				unmountOnExit
 			>
-				<h1 className="title" ref={nodeRef}>
-					Ink & Intent
-				</h1>
+				<Inker ref={nodeRef} className="globalHomeTitle" />
 			</CSSTransition>
 		</div>
 	);

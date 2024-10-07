@@ -1,0 +1,12 @@
+.title {
+	font-family: 'Pacifico', cursive;
+	user-select: none;
+}
+
+.medium {
+	font-size: 15px;
+}
+
+.large {
+	font-size: 30px;
+}

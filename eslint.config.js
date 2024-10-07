@@ -111,10 +111,6 @@ export default [
 			'react/jsx-no-useless-fragment': 'warn',
 			'react/no-unstable-nested-components': 'warn',
 			'react/prefer-stateless-function': [0],
-			'react/require-default-props': [
-				'warn',
-				{ ignoreFunctionalComponents: true },
-			],
 			'react/sort-comp': [0],
 			'react/state-in-constructor': [0],
 			'react/static-property-placement': [0],

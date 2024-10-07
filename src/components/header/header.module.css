@@ -1,0 +1,15 @@
+.layout {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 15px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid var(--separator);
+}
+
+.actions {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+}
