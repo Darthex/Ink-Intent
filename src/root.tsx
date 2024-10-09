@@ -36,7 +36,7 @@ const Root = () => {
 		if (
 			autoLoginCheck &&
 			!isAuthenticated &&
-			![ROUTES.AUTH, ROUTES.HOME].includes(location.pathname)
+			[ROUTES.WRITE].includes(location.pathname)
 		) {
 			navigate(ROUTES.AUTH, {
 				replace: true,
@@ -48,23 +48,41 @@ const Root = () => {
 	return (
 		<>
 			<Toaster />
-			<Routes>
-				<Route path={ROUTES.HOME} element={<Home />} />
-				<Route path={ROUTES.AUTH} element={<AuthLayout />} />
-			</Routes>
-			{isAuthenticated && pageVisibility && (
-				<>
-					<Header />
-					<div className="app-layout">
-						<Routes>
-							<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+			<>
+				{pageVisibility && <Header />}
+				<Routes>
+					<Route path={ROUTES.HOME} element={<Home />} />
+					<Route path={ROUTES.AUTH} element={<AuthLayout />} />
+				</Routes>
+				<div className="app-layout">
+					<Routes>
+						<Route path="*" element={<span>Not Found</span>} />
+						<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+						{isAuthenticated && (
 							<Route path={ROUTES.WRITE} element={<Write />} />
-							<Route path="*" element={<span>Not Found</span>} />
-						</Routes>
-					</div>
-				</>
-			)}
+						)}
+					</Routes>
+				</div>
+			</>
 		</>
+		// <>
+		// 	<Toaster />
+		// 	<Routes>
+		// 		<Route path={ROUTES.HOME} element={<Home />} />
+		// 		<Route path={ROUTES.AUTH} element={<AuthLayout />} />
+		// 	</Routes>
+		// 	{!isAuthenticated && pageVisibility && (
+		// 		<>
+		// 			<Header />
+		// 			<div className="app-layout">
+		// 				<Routes>
+		// 					<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+		// 					<Route path="*" element={<span>Not Found</span>} />
+		// 				</Routes>
+		// 			</div>
+		// 		</>
+		// 	)}
+		// </>
 	);
 };
 

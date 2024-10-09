@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from '../../redux-tlkt/hooks.ts';
 
@@ -21,8 +21,10 @@ import {
 } from '../../components/ui/tabs';
 import Inker from '../../components/inker/inker.tsx';
 import Loader from '../../components/loader/loader.tsx';
+import createToast from '../../utils/toasts.ts';
 
 import { validators } from '../../utils/validators.ts';
+import { ROUTES } from '../../constants/routes.ts';
 import {
 	useLoginMutation,
 	useRegisterMutation,
@@ -101,7 +103,6 @@ const validateErrors = (inputs: { email: string; password: string }) => {
 	return errors;
 };
 
-// TODO - notifications on error
 const Layout = () => {
 	const [tab, setTab] = useState('Login');
 	const [authForm, setAuthForm] = useState({
@@ -120,6 +121,8 @@ const Layout = () => {
 		useRegisterMutation();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const location = useLocation();
+	const fromWrite = location.state?.from?.pathname === ROUTES.WRITE;
 
 	const handleLogin = () => {
 		const fieldErrors = validateErrors(authForm.login);
@@ -185,6 +188,14 @@ const Layout = () => {
 	useEffect(() => {
 		if (registerData?.['User created']) setTab('Login'); //fixme - Hack, might lead to bugs
 	}, [registerData]);
+
+	useEffect(() => {
+		if (fromWrite) {
+			createToast({
+				title: 'Please Login to start writing',
+			});
+		}
+	}, [fromWrite]);
 
 	useEffect(() => {
 		workflowStarted(dispatch);
