@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
+
+import { useAppDispatch, useAppSelector } from './redux-tlkt/hooks.ts';
+import { RootState } from './redux-tlkt/store.ts';
 
 import Home from './pages/home/home.tsx';
 import Dashboard from './pages/dashboard/dashboard.tsx';
@@ -11,13 +13,15 @@ import { Toaster } from './components/ui/sonner.tsx';
 
 import { ROUTES } from './constants/routes.ts';
 import { validateSession } from './utils/workflow.ts';
-import { RootState } from './redux-tlkt/store.ts';
 
 import './index.css';
 
-function Root({ isAuthenticated = false }) {
+const Root = () => {
 	const [autoLoginCheck, setAutoLoginCheck] = useState(false);
-	const dispatch = useDispatch();
+	const { isAuthenticated } = useAppSelector(
+		(state: RootState) => state.root.auth
+	);
+	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const pageVisibility = ![ROUTES.HOME, ROUTES.AUTH].includes(
@@ -62,8 +66,6 @@ function Root({ isAuthenticated = false }) {
 			)}
 		</>
 	);
-}
+};
 
-export default connect((state: RootState) => ({
-	isAuthenticated: state.root.auth.isAuthenticated,
-}))(Root);
+export default Root;

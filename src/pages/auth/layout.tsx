@@ -1,6 +1,7 @@
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+
+import { useAppDispatch } from '../../redux-tlkt/hooks.ts';
 
 import { Button } from '../../components/ui/button.tsx';
 import {
@@ -117,7 +118,7 @@ const Layout = () => {
 	const [triggerLogin, { isLoading: loginLoading }] = useLoginMutation();
 	const [triggerRegister, { isLoading: registerLoading, data: registerData }] =
 		useRegisterMutation();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const handleLogin = () => {
