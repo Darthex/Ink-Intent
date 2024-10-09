@@ -10,3 +10,7 @@
 .title {
 	position: relative;
 }
+
+.error {
+	color: var(--lust);
+}

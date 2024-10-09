@@ -1,10 +1,10 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar.tsx';
-import { Input } from '../ui/input.tsx';
+import { Button } from '../ui/button.tsx';
 import Inker from '../inker/inker.tsx';
-import Quill from '../../svgs/quill.jsx';
+import Quill from '../../svgs/quill.tsx';
+import SearchBar from '../search-bar/search-bar.tsx';
 
 import { ROUTES } from '../../constants/routes.ts';
 
@@ -15,10 +15,16 @@ const Header = () => {
 
 	return (
 		<div className={styles.layout}>
-			<Inker size="medium" />
+			<Inker size="medium" onClick={() => navigate(ROUTES.DASHBOARD)} />
 			<div className={styles.actions}>
-				<Input placeholder="Search" />
-				<Quill />
+				<SearchBar />
+				<Button
+					variant="ghost"
+					size="icon"
+					onClick={() => navigate(ROUTES.WRITE)}
+				>
+					<Quill />
+				</Button>
 				<Avatar
 					onClick={() => navigate(ROUTES.AUTH)}
 					style={{ cursor: 'pointer' }}
