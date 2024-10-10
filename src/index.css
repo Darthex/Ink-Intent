@@ -26,10 +26,29 @@
 	--lust: #e62020;
 }
 
+html {
+	background-color: black;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+::-webkit-scrollbar {
+	width: 0; /* Remove scrollbar space */
+	background: transparent; /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+	/*background: #FF0000;*/
+}
+
 body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+}
+
+p {
+	max-width: 100%;
+	text-wrap: wrap;
 }
 
 #root {
@@ -41,6 +60,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	padding: 10px;
+	background-color: hsl(var(--background));
 }
 
 button {
@@ -124,4 +144,70 @@ button {
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+.ProseMirror {
+	padding: 10px;
+	background: transparent;
+	border-radius: 0 0 5px 5px;
+	max-height: 100%;
+	overflow: hidden;
+}
+
+.ProseMirror > * + * {
+	margin-top: 0.75em;
+}
+
+.ProseMirror ul {
+	padding: 0 1rem;
+	list-style: disc !important;
+}
+.ProseMirror ol {
+	padding: 0 2rem;
+	list-style: decimal !important;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+	line-height: 1.1;
+}
+
+.ProseMirror code {
+	background-color: rgba(#616161, 0.1);
+	color: #616161;
+}
+
+.ProseMirror pre {
+	/*background: #0d0d0d;*/
+	background-color: #747bff;
+	color: #fff;
+	font-family: 'JetBrainsMono', monospace;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.ProseMirror code {
+	color: inherit;
+	padding: 0;
+	background: none;
+	font-size: 0.8rem;
+}
+
+.ProseMirror blockquote {
+	padding-left: 1rem;
+	border-left: 3px solid #999999;
+}
+
+.ProseMirror hr {
+	border: none;
+	border-top: 3px solid #999999;
+	margin: 2rem 0;
+}
+
+.heading3 {
+	font-size: 15px;
 }

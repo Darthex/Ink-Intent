@@ -1,0 +1,49 @@
+.container {
+	/*background-color: #8f4e51;*/
+	height: 100%;
+	min-width: 70%;
+}
+
+.textSection,
+.titleSection {
+	display: grid;
+	grid-template-columns: 0.3fr 6fr;
+	gap: 30px;
+	align-items: center;
+}
+
+.addButton {
+	width: 70px;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 300ms;
+}
+
+.crossButton {
+	transform: rotate(45deg);
+	transition: transform 300ms;
+}
+
+.title {
+	display: flex;
+	font-size: 50px;
+	outline: none;
+	width: 100%;
+	background-color: transparent;
+}
+
+.textBox {
+	display: flex;
+	font-size: 20px;
+	outline: none;
+	width: 100%;
+	background-color: transparent;
+	resize: none;
+}
+
+.input {
+	display: flex;
+	align-items: center;
+}

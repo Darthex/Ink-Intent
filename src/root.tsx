@@ -7,7 +7,7 @@ import { RootState } from './redux-tlkt/store.ts';
 import Home from './pages/home/home.tsx';
 import Dashboard from './pages/dashboard/dashboard.tsx';
 import AuthLayout from './pages/auth/layout.tsx';
-import Write from './pages/write/write.tsx';
+import Write from './pages/write/write-new.tsx';
 import Header from './components/header/header.tsx';
 import { Toaster } from './components/ui/sonner.tsx';
 
