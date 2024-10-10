@@ -48,9 +48,14 @@ type FormError = {
 	};
 };
 
-const init = {
+const errorInit = {
 	email: { message: '', show: false },
 	password: { message: '', show: false },
+};
+
+const formInit = {
+	login: { email: '', password: '' },
+	register: { email: '', password: '' },
 };
 
 const validateErrors = (inputs: { email: string; password: string }) => {
@@ -105,16 +110,13 @@ const validateErrors = (inputs: { email: string; password: string }) => {
 
 const Layout = () => {
 	const [tab, setTab] = useState('Login');
-	const [authForm, setAuthForm] = useState({
-		login: { email: '', password: '' },
-		register: { email: '', password: '' },
-	});
+	const [authForm, setAuthForm] = useState(formInit);
 	const [errors, setErrors] = useState<{
 		login: FormError;
 		register: FormError;
 	}>({
-		login: init,
-		register: init,
+		login: errorInit,
+		register: errorInit,
 	});
 	const [triggerLogin, { isLoading: loginLoading }] = useLoginMutation();
 	const [triggerRegister, { isLoading: registerLoading, data: registerData }] =
@@ -134,10 +136,7 @@ const Layout = () => {
 					dispatch,
 				},
 			});
-			setAuthForm({
-				login: { email: '', password: '' },
-				register: { email: '', password: '' },
-			});
+			setAuthForm(formInit);
 		} else {
 			setErrors((prevState) => ({
 				...prevState,
@@ -152,10 +151,7 @@ const Layout = () => {
 			triggerRegister({
 				data: authForm.register,
 			});
-			setAuthForm({
-				login: { email: '', password: '' },
-				register: { email: '', password: '' },
-			});
+			setAuthForm(formInit);
 		} else {
 			setErrors((prevState) => ({
 				...prevState,
