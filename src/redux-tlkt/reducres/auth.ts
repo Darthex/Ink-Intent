@@ -5,6 +5,7 @@ const initialState = {
 	loading: false,
 	user: {
 		id: '',
+		username: '',
 	},
 };
 

@@ -18,7 +18,6 @@ type Props = {
 	onClick: () => void;
 	footer: string;
 	body: ReactNode;
-	disabled: boolean;
 	loading: boolean;
 };
 
@@ -29,20 +28,25 @@ const Modal = ({
 	onClick,
 	footer,
 	body,
-	disabled,
 	loading,
 }: Props) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>{trigger}</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]" disabled={disabled}>
+			<DialogContent
+				className="sm:max-w-[425px]"
+				disabled={loading}
+				onInteractOutside={(e) => {
+					if (loading) e.preventDefault();
+				}}
+			>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
 					<DialogDescription>{description}</DialogDescription>
 				</DialogHeader>
 				{body}
 				<DialogFooter>
-					<Button onClick={onClick} disabled={disabled}>
+					<Button onClick={onClick} disabled={loading}>
 						{loading ? <Loader /> : footer}
 					</Button>
 				</DialogFooter>

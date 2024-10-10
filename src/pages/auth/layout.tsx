@@ -21,7 +21,7 @@ import {
 } from '../../components/ui/tabs';
 import Inker from '../../components/inker/inker.tsx';
 import Loader from '../../components/loader/loader.tsx';
-import createToast from '../../utils/toasts.ts';
+import createToast, { generateError } from '../../utils/toasts.ts';
 
 import { validators } from '../../utils/validators.ts';
 import { ROUTES } from '../../constants/routes.ts';
@@ -35,7 +35,7 @@ import styles from './layout.module.css';
 
 type FormType = 'login' | 'register';
 
-type FieldType = 'email' | 'password';
+type FieldType = 'email' | 'password' | 'username';
 
 type FormError = {
 	email: {
@@ -46,23 +46,45 @@ type FormError = {
 		message: string;
 		show: boolean;
 	};
+	username: {
+		message: string;
+		show: boolean;
+	};
 };
 
 const errorInit = {
 	email: { message: '', show: false },
 	password: { message: '', show: false },
+	username: { message: '', show: false },
 };
 
 const formInit = {
 	login: { email: '', password: '' },
-	register: { email: '', password: '' },
+	register: { email: '', password: '', username: '' },
 };
 
-const validateErrors = (inputs: { email: string; password: string }) => {
+const validateErrors = (inputs: {
+	email: string;
+	password: string;
+	username?: string;
+}) => {
 	const errors: FormError = {
 		email: { message: '', show: true },
 		password: { message: '', show: true },
+		username: { message: '', show: true },
 	};
+	if (
+		inputs.username !== undefined &&
+		validators.requiredAndNoWhiteSpace({
+			value: inputs.username,
+			entity: 'Username',
+		})
+	) {
+		errors.username.message = validators.requiredAndNoWhiteSpace({
+			value: inputs.username,
+			entity: 'Username',
+		}) as string;
+	}
 	if (
 		validators.validEmail(inputs.email) ||
 		validators.requiredAndNoWhiteSpace({ value: inputs.email, entity: 'Email' })
@@ -119,8 +141,10 @@ const Layout = () => {
 		register: errorInit,
 	});
 	const [triggerLogin, { isLoading: loginLoading }] = useLoginMutation();
-	const [triggerRegister, { isLoading: registerLoading, data: registerData }] =
-		useRegisterMutation();
+	const [
+		triggerRegister,
+		{ isLoading: registerLoading, isSuccess, isError, error: apiError },
+	] = useRegisterMutation();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -133,7 +157,6 @@ const Layout = () => {
 				argument: {
 					data: authForm.login,
 					navigate,
-					dispatch,
 				},
 			});
 			setAuthForm(formInit);
@@ -182,8 +205,23 @@ const Layout = () => {
 	};
 
 	useEffect(() => {
-		if (registerData?.['User created']) setTab('Login'); //fixme - Hack, might lead to bugs
-	}, [registerData]);
+		if (isSuccess) {
+			createToast({
+				type: 'success',
+				title: 'User created. Please login',
+				actionLabel: 'Ok',
+			});
+			setTab('Login');
+		}
+		if (isError) {
+			createToast({
+				type: 'error',
+				description: generateError((apiError as any)?.error),
+				title: 'An error occurred while registering',
+				actionLabel: 'Ok',
+			});
+		}
+	}, [isError, isSuccess]);
 
 	useEffect(() => {
 		if (fromWrite) {
@@ -280,7 +318,35 @@ const Layout = () => {
 						</CardHeader>
 						<CardContent className="space-y-2">
 							<div className="space-y-1">
-								<Label htmlFor="current">Email</Label>
+								<Label htmlFor="name">
+									Username
+									{errors.register.username.show &&
+										errors.register.username.message && (
+											<span className={styles.error}>
+												{' '}
+												- {errors.register.username.message}
+											</span>
+										)}
+								</Label>
+								<Input
+									id="username"
+									type="text"
+									placeholder="johnDoe"
+									value={authForm.register.username}
+									onChange={(e) => handleChange(e, 'register')}
+								/>
+							</div>
+							<div className="space-y-1">
+								<Label htmlFor="current">
+									Email
+									{errors.register.email.show &&
+										errors.register.email.message && (
+											<span className={styles.error}>
+												{' '}
+												- {errors.register.email.message}
+											</span>
+										)}
+								</Label>
 								<Input
 									id="email"
 									type="email"
@@ -290,7 +356,16 @@ const Layout = () => {
 								/>
 							</div>
 							<div className="space-y-1">
-								<Label htmlFor="new">Password</Label>
+								<Label htmlFor="new">
+									Password
+									{errors.register.password.show &&
+										errors.register.password.message && (
+											<span className={styles.error}>
+												{' '}
+												- {errors.register.password.message}
+											</span>
+										)}
+								</Label>
 								<Input
 									id="password"
 									type="password"

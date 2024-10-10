@@ -8,6 +8,14 @@ type Toast = {
 	actionCallback?: () => void;
 };
 
+export const generateError = (error: any) => {
+	if (typeof error === 'string') {
+		return error;
+	} else {
+		return 'Unknown';
+	}
+};
+
 const createToast = ({
 	title,
 	description,

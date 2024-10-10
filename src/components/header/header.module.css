@@ -22,3 +22,16 @@
 .buttons {
 	width: 50px;
 }
+
+.sheetFooter {
+	height: 80%;
+	display: flex;
+	align-items: flex-end;
+}
+
+.footerButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+}
