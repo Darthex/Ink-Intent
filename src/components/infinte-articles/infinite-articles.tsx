@@ -63,7 +63,6 @@ const InfiniteArticles = () => {
 		} else {
 			if (data?.result) {
 				setCachedArticles(data.result);
-				// resetPage(0);
 				searchRef.current = search as string;
 			}
 		}
