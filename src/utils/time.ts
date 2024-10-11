@@ -12,7 +12,7 @@ export const getFormattedTime = (
 				month: 'short',
 			});
 		case 'date-only':
-			d.toLocaleDateString('en-US', {
+			return d.toLocaleDateString('en-US', {
 				day: 'numeric',
 				month: 'short',
 			});
