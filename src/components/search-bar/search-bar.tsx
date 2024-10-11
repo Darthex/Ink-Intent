@@ -55,6 +55,9 @@ const SearchBar = ({ onSearch, clearTerm }: Props) => {
 		if (e.key === 'Enter') {
 			handleSearch();
 		}
+		if (e.key === 'Enter' && !searchTerm && urlSearchString) {
+			handleClear();
+		}
 	};
 
 	return (

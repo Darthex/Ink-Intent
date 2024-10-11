@@ -1,5 +1,9 @@
 type Entity = [] | object;
 
+type IndexableObject = {
+	[key: string]: any;
+};
+
 export function isEmpty(entity: Entity) {
 	if (Array.isArray(entity)) {
 		return !(entity.length > 0);
@@ -9,7 +13,7 @@ export function isEmpty(entity: Entity) {
 	}
 }
 
-export function omit(object: object, paths: string[]) {
+export function omit(object: IndexableObject, paths: string[]) {
 	const mutableObject = { ...object };
 	paths.forEach((key) => delete mutableObject[key]);
 	return mutableObject;

@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 
 import { useGetArticlesQuery } from '../../redux-tlkt/api-injections/article/article.ts';
 import { Article } from '../../redux-tlkt/api-injections/article/article.ts';
@@ -20,8 +22,15 @@ const InfiniteArticles = () => {
 		optimisticDefaultMaxCount
 	);
 	const parentRef = useRef(null);
+	const searchRef = useRef<string | undefined>(undefined); // this has to be undefined
 
-	const { loadMoreRef, page } = useInfiniteScroll({
+	const location = useLocation();
+	const { search } = useMemo(
+		() => queryString.parse(location.search),
+		[location.search]
+	);
+
+	const { loadMoreRef, page, resetPage } = useInfiniteScroll({
 		currentPage: 0,
 		parentRef,
 		loading: localLoader,
@@ -31,28 +40,52 @@ const InfiniteArticles = () => {
 		{
 			take: perPage,
 			skip: (page - 1) * perPage,
+			...(search ? { search: search as string } : {}),
 		},
-		{ skip: page <= 0 || (page - 1) * perPage > maxArticleCount }
+		{
+			refetchOnMountOrArgChange: true,
+			skip: page <= 0 || (page - 1) * perPage > maxArticleCount,
+		}
 	);
 
 	useEffect(() => {
 		setMaxArticleCount(data?.count ?? optimisticDefaultMaxCount);
-		if (data?.result)
-			setCachedArticles((prevState) => [...prevState, ...data.result]);
-	}, [data]);
+		/* IDK if this the best method to achieve what I wanted, so basically lets say the search term is
+    empty at page load (unless loaded from url), so fetching articles from api should append these articles to
+    already fetched list because it's an infinite list, but now if I change the search term, I don't want the new
+    results to append to the existing list I want to show a new list, but now all subsequent loads of this search term
+    should append to this new list (wtf I hope it makes sense).
+    */
+		if (search === searchRef.current) {
+			if (data?.result) {
+				setCachedArticles((prevState) => [...prevState, ...data.result]);
+			}
+		} else {
+			if (data?.result) {
+				setCachedArticles(data.result);
+				// resetPage(0);
+				searchRef.current = search as string;
+			}
+		}
+	}, [data, resetPage]);
 
 	useEffect(() => {
 		setLocalLoader(isFetching);
 	}, [isFetching]);
 
+	useEffect(() => {
+		if (search !== searchRef.current) resetPage(1);
+	}, [search, searchRef]);
+
 	return (
 		<div className="h-[calc(100vh-100px)] overflow-scroll" ref={parentRef}>
 			<div className={styles.articlesContainer}>
-				{cachedArticles.map((article) => (
-					<div key={article.id}>
-						<ArticleCard article={article} />
-					</div>
-				))}
+				{search === searchRef.current &&
+					cachedArticles.map((article) => (
+						<div key={article.id}>
+							<ArticleCard article={article} />
+						</div>
+					))}
 			</div>
 			<div ref={loadMoreRef} className={styles.footer}>
 				{isFetching && <Loader color="white" />}

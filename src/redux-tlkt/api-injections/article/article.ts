@@ -1,9 +1,10 @@
-import api from '../../api.ts';
+import api, { DO_NOT_CACHE_DATA } from '../../api.ts';
 import { PUBLISH_ARTICLE, GET_ARTICLES } from '../../../constants/endpoints.ts';
 
 type Params = {
 	skip?: number;
 	take?: number;
+	search?: string;
 };
 
 export type Article = {
@@ -43,6 +44,7 @@ const extendedApi = api
 					url: GET_ARTICLES,
 					params: params,
 				}),
+				keepUnusedDataFor: DO_NOT_CACHE_DATA,
 				providesTags: [ARTICLE_TAG],
 			}),
 		}),
