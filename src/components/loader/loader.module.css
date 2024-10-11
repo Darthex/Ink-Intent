@@ -54,6 +54,12 @@
 	}
 }
 
+.white {
+	&:after {
+		border-color: white transparent transparent;
+	}
+}
+
 .visible {
 }
 

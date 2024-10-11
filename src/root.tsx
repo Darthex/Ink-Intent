@@ -65,24 +65,6 @@ const Root = () => {
 				</div>
 			</>
 		</>
-		// <>
-		// 	<Toaster />
-		// 	<Routes>
-		// 		<Route path={ROUTES.HOME} element={<Home />} />
-		// 		<Route path={ROUTES.AUTH} element={<AuthLayout />} />
-		// 	</Routes>
-		// 	{!isAuthenticated && pageVisibility && (
-		// 		<>
-		// 			<Header />
-		// 			<div className="app-layout">
-		// 				<Routes>
-		// 					<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-		// 					<Route path="*" element={<span>Not Found</span>} />
-		// 				</Routes>
-		// 			</div>
-		// 		</>
-		// 	)}
-		// </>
 	);
 };
 

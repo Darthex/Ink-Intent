@@ -35,3 +35,9 @@
 	justify-content: center;
 	gap: 5px;
 }
+
+@media screen and (max-width: 480px) {
+	.actions {
+		gap: 10px;
+	}
+}

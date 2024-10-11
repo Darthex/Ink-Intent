@@ -238,7 +238,7 @@ const Layout = () => {
 	return (
 		<div className={styles.container}>
 			<Inker />
-			<Tabs defaultValue="Login" className="w-[400px]" value={tab}>
+			<Tabs defaultValue="Login" className="w-[350px] lg:w-[400px]" value={tab}>
 				<TabsList className="grid w-full grid-cols-2">
 					<TabsTrigger
 						value="Login"
