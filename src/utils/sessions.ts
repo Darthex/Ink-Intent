@@ -1,4 +1,4 @@
-import { accessTokenKey, authSessionKey } from './constants';
+import { accessTokenKey, authSessionKey, FTUKey } from './constants';
 
 export type Token = {
 	access_token: string;
@@ -42,6 +42,16 @@ export const getUsername = () => {
 
 export const getTagsFromSession = (): string[] => {
 	return JSON.parse(localStorage.getItem(authSessionKey) as string)?.user?.tags;
+};
+
+export const FTU = (action: 'get' | 'set') => {
+	switch (action) {
+		case 'set':
+			localStorage.setItem(FTUKey, JSON.stringify(false));
+			break;
+		case 'get':
+			return !localStorage.getItem(FTUKey);
+	}
 };
 
 export const destroySession = () => {

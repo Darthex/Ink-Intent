@@ -26,11 +26,15 @@ const Header = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const isWritePage = location.pathname === ROUTES.WRITE;
+	const isDashboard = location.pathname === ROUTES.DASHBOARD;
 	const { user, isAuthenticated, article } = getState(useAppSelector);
 
 	return (
 		<div className={styles.layout}>
-			<Inker size="medium" onClick={() => navigate(ROUTES.DASHBOARD)} />
+			<Inker
+				size="medium"
+				onClick={() => navigate(isDashboard ? ROUTES.HOME : ROUTES.DASHBOARD)}
+			/>
 			<div className={styles.actions}>
 				{!isWritePage && <SearchBar />}
 				<QuillPublisher

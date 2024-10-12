@@ -13,11 +13,13 @@ import { Toaster } from './components/ui/sonner.tsx';
 
 import { ROUTES } from './constants/routes.ts';
 import { validateSession } from './utils/workflow.ts';
+import { FTU } from './utils/sessions.ts';
 
 import './index.css';
 
 const Root = () => {
 	const [autoLoginCheck, setAutoLoginCheck] = useState(false);
+	const isFTU = FTU('get');
 	const { isAuthenticated } = useAppSelector(
 		(state: RootState) => state.root.auth
 	);
@@ -43,7 +45,10 @@ const Root = () => {
 				state: { from: location },
 			});
 		}
-	}, [location, isAuthenticated, navigate, autoLoginCheck]);
+		if (isFTU) {
+			navigate(ROUTES.HOME);
+		}
+	}, [location, isAuthenticated, navigate, autoLoginCheck, isFTU]);
 
 	return (
 		<>

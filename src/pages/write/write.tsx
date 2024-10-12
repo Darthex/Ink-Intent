@@ -12,7 +12,7 @@ import Add from '../../svgs/Add.tsx';
 import styles from './write.module.css';
 import '../home/home.css';
 
-// TODO: discarding for now, as its getting too complicated and still fill of bugs
+// TODO: discarding for now, as its getting too complicated and still full of bugs
 const Write = () => {
 	const [title, setTitle] = useState('');
 	const [dynamicTextBox, setDynamicTextBox] = useState<number[]>([]);

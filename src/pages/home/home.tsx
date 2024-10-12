@@ -6,10 +6,12 @@ import BubbleLink from '../../components/bubble-link/bubble-link.tsx';
 import Inker from '../../components/inker/inker.tsx';
 
 import { ROUTES } from '../../constants/routes.ts';
+import { FTU } from '../../utils/sessions.ts';
 
 import './home.css';
 
 const Home = () => {
+	FTU('set');
 	const [popTitle, setPopTitle] = useState(false);
 	const navigate = useNavigate();
 	const nodeRef = useRef(null);

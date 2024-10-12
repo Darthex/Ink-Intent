@@ -99,7 +99,6 @@ const InfiniteArticles = ({
 
 	return (
 		<div
-			// className={`h-[calc(100vh-${margin})] overflow-scroll`}
 			style={{
 				overflow: 'scroll',
 				height: `calc(100vh - ${margin})`,
