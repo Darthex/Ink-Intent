@@ -14,7 +14,7 @@ import styles from './infinite-articles.module.css';
 const perPage = 10;
 const optimisticDefaultMaxCount = 10;
 
-// fixme - if feels like there are tons of side effects here
+// fixme - it feels like there are tons of side effects here
 const InfiniteArticles = () => {
 	const [cachedArticles, setCachedArticles] = useState<Article[]>([]);
 	const [localLoader, setLocalLoader] = useState(false);
