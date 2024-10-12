@@ -41,7 +41,7 @@ const InfiniteArticles = ({ location }: { location: Location<any> }) => {
 			take: perPage,
 			skip: (page - 1) * perPage,
 			...(search ? { search: search as string } : {}),
-			...(tag ? { tag } : {}),
+			...(tag ? { tags: tag } : {}),
 		},
 		{
 			refetchOnMountOrArgChange: true,
@@ -56,7 +56,6 @@ const InfiniteArticles = ({ location }: { location: Location<any> }) => {
     already fetched list because it's an infinite list, but now if I change the search term, I don't want the new
     results to append to the existing list I want to show a new list, but now all subsequent loads of this search term
     should append to this new list (wtf I hope it makes sense).
-    fixme - tag refs are not working
     */
 		if (search === searchRef.current) {
 			if (data?.result) {
