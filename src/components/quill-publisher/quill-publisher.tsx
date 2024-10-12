@@ -4,10 +4,9 @@ import { NavigateFunction } from 'react-router-dom';
 import { usePublishMutation } from '../../redux-tlkt/api-injections/article/article.ts';
 
 import { Button } from '../ui/button.tsx';
-import { Label } from '../ui/label.tsx';
-import { Input } from '../ui/input.tsx';
 import Quill from '../../svgs/quill.tsx';
 import Modal from '../modal/modal.tsx';
+import PublisherForm from '../publisher-form/publisher-form.tsx';
 import createToast, { generateError } from '../../utils/toasts.ts';
 
 import { ROUTES } from '../../constants/routes.ts';
@@ -24,7 +23,7 @@ type Props = {
 
 const EMPTY_ARTICLE = '<p></p>';
 
-type Form = {
+export type Form = {
 	title: string;
 	description: string;
 	cover: string | ArrayBuffer | null;
@@ -89,63 +88,13 @@ const QuillPublisher = ({ showPublish, user, article, navigate }: Props) => {
 
 	const renderModalBody = () => {
 		return (
-			<div className="grid gap-4 py-4">
-				<div className="grid grid-cols-4 items-center gap-4">
-					<Label htmlFor="name" className="text-center">
-						Title
-					</Label>
-					<Input
-						value={publishForm.title}
-						name="title"
-						type="text"
-						className="col-span-3"
-						onChange={handleFormChange}
-					/>
-					<Label htmlFor="name" className="text-center">
-						Description
-					</Label>
-					<Input
-						value={publishForm.description}
-						name="description"
-						type="text"
-						className="col-span-3"
-						onChange={handleFormChange}
-					/>
-					<Label htmlFor="name" className="text-center">
-						Cover image
-					</Label>
-					{!selectedImage ? (
-						<Input
-							className="col-span-3"
-							type="file"
-							accept="image/png, image/jpeg"
-							onChange={handleFormChange}
-						/>
-					) : (
-						<Input
-							className="col-span-2"
-							type="text"
-							disabled
-							value={selectedImage.name}
-						/>
-					)}
-					{publishForm.cover && (
-						<Button
-							variant="destructive"
-							className="col-span-1"
-							onClick={() => {
-								setSelectedImage(null);
-								setPublishForm((prevState) => ({
-									...prevState,
-									cover: null,
-								}));
-							}}
-						>
-							Delete
-						</Button>
-					)}
-				</div>
-			</div>
+			<PublisherForm
+				setPublishForm={setPublishForm}
+				publishForm={publishForm}
+				onChange={handleFormChange}
+				selectedImage={selectedImage}
+				setSelectedImage={setSelectedImage}
+			/>
 		);
 	};
 
@@ -181,6 +130,7 @@ const QuillPublisher = ({ showPublish, user, article, navigate }: Props) => {
 			footer="Publish"
 			body={renderModalBody()}
 			loading={isLoading}
+			disabled={!publishForm.title || !publishForm.description}
 		/>
 	);
 };
