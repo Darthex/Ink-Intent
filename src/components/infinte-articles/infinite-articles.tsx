@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { type Location } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { useGetArticlesQuery } from '../../redux-tlkt/api-injections/article/article.ts';
@@ -15,7 +15,7 @@ const perPage = 10;
 const optimisticDefaultMaxCount = 10;
 
 // fixme - it feels like there are tons of side effects here
-const InfiniteArticles = () => {
+const InfiniteArticles = ({ location }: { location: Location<any> }) => {
 	const [cachedArticles, setCachedArticles] = useState<Article[]>([]);
 	const [localLoader, setLocalLoader] = useState(false);
 	const [maxArticleCount, setMaxArticleCount] = useState(
@@ -23,9 +23,9 @@ const InfiniteArticles = () => {
 	);
 	const parentRef = useRef(null);
 	const searchRef = useRef<string | undefined>(undefined); // this has to be undefined
+	const tagRef = useRef<string | undefined>(undefined);
 
-	const location = useLocation();
-	const { search } = useMemo(
+	const { search, tag } = useMemo(
 		() => queryString.parse(location.search),
 		[location.search]
 	);
@@ -41,6 +41,7 @@ const InfiniteArticles = () => {
 			take: perPage,
 			skip: (page - 1) * perPage,
 			...(search ? { search: search as string } : {}),
+			...(tag ? { tag } : {}),
 		},
 		{
 			refetchOnMountOrArgChange: true,
@@ -55,15 +56,28 @@ const InfiniteArticles = () => {
     already fetched list because it's an infinite list, but now if I change the search term, I don't want the new
     results to append to the existing list I want to show a new list, but now all subsequent loads of this search term
     should append to this new list (wtf I hope it makes sense).
+    fixme - tag refs are not working
     */
 		if (search === searchRef.current) {
 			if (data?.result) {
 				setCachedArticles((prevState) => [...prevState, ...data.result]);
 			}
-		} else {
+		}
+		if (search !== searchRef.current) {
 			if (data?.result) {
 				setCachedArticles(data.result);
 				searchRef.current = search as string;
+			}
+		}
+		if (tag === tagRef.current) {
+			if (data?.result) {
+				setCachedArticles((prevState) => [...prevState, ...data.result]);
+			}
+		}
+		if (tag !== tagRef.current) {
+			if (data?.result) {
+				setCachedArticles(data.result);
+				tagRef.current = tag as string;
 			}
 		}
 	}, [data, resetPage]);
@@ -74,10 +88,11 @@ const InfiniteArticles = () => {
 
 	useEffect(() => {
 		if (search !== searchRef.current) resetPage(1);
-	}, [search, searchRef]);
+		if (tag !== tagRef.current) resetPage(1);
+	}, [search, searchRef, tag, tagRef]);
 
 	return (
-		<div className="h-[calc(100vh-100px)] overflow-scroll" ref={parentRef}>
+		<div className="h-[calc(100vh-160px)] overflow-scroll" ref={parentRef}>
 			<div className={styles.articlesContainer}>
 				{search === searchRef.current &&
 					cachedArticles.map((article) => (

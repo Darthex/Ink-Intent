@@ -1,7 +1,18 @@
-import { type Dispatch, SetStateAction, ChangeEvent } from 'react';
+import {
+	type Dispatch,
+	SetStateAction,
+	ChangeEvent,
+	FormEventHandler,
+} from 'react';
+
+import { useGetTagsQuery } from '../../redux-tlkt/api-injections/tags/tags.ts';
+
 import { Label } from '../ui/label.tsx';
 import { Input } from '../ui/input.tsx';
+import { Checkbox } from '../ui/checkbox.tsx';
 import { Button } from '../ui/button.tsx';
+import TagPopover from '../tag-popover/tag-popover.tsx';
+
 import { Form } from '../quill-publisher/quill-publisher.tsx';
 
 import styles from './publisher-form.module.css';
@@ -21,6 +32,34 @@ const PublisherForm = ({
 	selectedImage,
 	setSelectedImage,
 }: Props) => {
+	const { data } = useGetTagsQuery();
+
+	const renderTrigger = () => {
+		return (
+			<Button className="w-full" variant="outline">
+				Choose Tags
+			</Button>
+		);
+	};
+
+	const renderBody = () => {
+		return (
+			<div className={styles.tagBody}>
+				{data &&
+					data.tags.map((tag) => (
+						<div key={tag} className={styles.tagOption}>
+							<Checkbox
+								onClick={onChange as FormEventHandler<HTMLButtonElement>}
+								checked={publishForm.tags.includes(tag)}
+								id={tag}
+							/>
+							<span>{tag}</span>
+						</div>
+					))}
+			</div>
+		);
+	};
+
 	return (
 		<div className="grid gap-4 py-4">
 			<div className="grid grid-cols-4 items-center gap-4">
@@ -77,6 +116,9 @@ const PublisherForm = ({
 						Delete
 					</Button>
 				)}
+				<div className="col-span-4">
+					<TagPopover trigger={renderTrigger()} content={renderBody()} />
+				</div>
 			</div>
 		</div>
 	);

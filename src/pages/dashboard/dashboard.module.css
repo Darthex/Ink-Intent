@@ -1,0 +1,21 @@
+.mainLayout {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	width: 100%;
+}
+
+.section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+@media screen and (max-width: 480px) {
+	.mainLayout {
+		grid-template-columns: 1fr;
+	}
+	.placeholder {
+		display: none;
+	}
+}

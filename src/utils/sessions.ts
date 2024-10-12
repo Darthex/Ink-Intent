@@ -40,6 +40,10 @@ export const getUsername = () => {
 		?.username;
 };
 
+export const getTagsFromSession = (): string[] => {
+	return JSON.parse(localStorage.getItem(authSessionKey) as string)?.user?.tags;
+};
+
 export const destroySession = () => {
 	localStorage.removeItem(authSessionKey);
 };

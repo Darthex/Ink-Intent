@@ -1,0 +1,26 @@
+.scrollDiv {
+	width: 100%;
+	display: flex;
+	gap: 20px;
+	overflow: scroll;
+	text-wrap: nowrap;
+	position: relative;
+}
+
+.floatingButton {
+	position: absolute;
+	z-index: 1;
+	backdrop-filter: blur(2px);
+	cursor: pointer;
+	margin-bottom: 15px;
+	transition: background 0.3s ease;
+}
+
+.right {
+	right: 0;
+}
+
+.toggleGroup {
+	margin-right: 30px;
+	margin-left: 30px;
+}

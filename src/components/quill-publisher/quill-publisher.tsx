@@ -27,12 +27,14 @@ export type Form = {
 	title: string;
 	description: string;
 	cover: string | ArrayBuffer | null;
+	tags: string[];
 };
 
 const initForm: Form = {
 	title: '',
 	description: '',
 	cover: null,
+	tags: [],
 };
 
 const QuillPublisher = ({ showPublish, user, article, navigate }: Props) => {
@@ -52,6 +54,7 @@ const QuillPublisher = ({ showPublish, user, article, navigate }: Props) => {
 				content: JSON.stringify(article),
 				owner_id: user.id,
 				owner_name: user.username,
+				tags: publishForm.tags,
 			},
 		});
 	};
@@ -70,6 +73,13 @@ const QuillPublisher = ({ showPublish, user, article, navigate }: Props) => {
 				reader.readAsDataURL(file);
 				setSelectedImage(file);
 			}
+		} else if (e.target.role === 'checkbox') {
+			setPublishForm((prevState) => ({
+				...prevState,
+				tags: !prevState.tags.includes(e.target.id)
+					? [...prevState.tags, e.target.id]
+					: prevState.tags.filter((item) => item !== e.target.id),
+			}));
 		} else {
 			setPublishForm((prevState) => ({
 				...prevState,
