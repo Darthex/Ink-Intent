@@ -1,7 +1,8 @@
 .mainLayout {
 	display: grid;
-	grid-template-columns: 3fr 1fr;
+	grid-template-columns: 2fr 1fr;
 	width: 100%;
+	gap: 5px;
 }
 
 .section {
@@ -9,6 +10,13 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+}
+
+.placeholder {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-left: 1px solid var(--separator);
 }
 
 @media screen and (max-width: 480px) {

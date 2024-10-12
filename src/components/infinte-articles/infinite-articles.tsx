@@ -15,7 +15,13 @@ const perPage = 10;
 const optimisticDefaultMaxCount = 10;
 
 // fixme - it feels like there are tons of side effects here
-const InfiniteArticles = ({ location }: { location: Location<any> }) => {
+const InfiniteArticles = ({
+	location,
+	showTagSelector,
+}: {
+	location: Location<any>;
+	showTagSelector: boolean;
+}) => {
 	const [cachedArticles, setCachedArticles] = useState<Article[]>([]);
 	const [localLoader, setLocalLoader] = useState(false);
 	const [maxArticleCount, setMaxArticleCount] = useState(
@@ -24,6 +30,7 @@ const InfiniteArticles = ({ location }: { location: Location<any> }) => {
 	const parentRef = useRef(null);
 	const searchRef = useRef<string | undefined>(undefined); // this has to be undefined
 	const tagRef = useRef<string | undefined>(undefined);
+	const margin = showTagSelector ? '160px' : '100px';
 
 	const { search, tag } = useMemo(
 		() => queryString.parse(location.search),
@@ -91,7 +98,10 @@ const InfiniteArticles = ({ location }: { location: Location<any> }) => {
 	}, [search, searchRef, tag, tagRef]);
 
 	return (
-		<div className="h-[calc(100vh-160px)] overflow-scroll" ref={parentRef}>
+		<div
+			className={`h-[calc(100vh-${margin})] overflow-scroll`}
+			ref={parentRef}
+		>
 			<div className={styles.articlesContainer}>
 				{search === searchRef.current &&
 					cachedArticles.map((article) => (
