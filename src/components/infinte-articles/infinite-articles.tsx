@@ -4,6 +4,7 @@ import queryString from 'query-string';
 
 import { useGetArticlesQuery } from '../../redux-tlkt/api-injections/article/article.ts';
 import { Article } from '../../redux-tlkt/api-injections/article/article.ts';
+import { shallowEqual } from '../../utils/lodash.ts';
 
 import ArticleCard from '../article-card/article-card.tsx';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll.tsx';
@@ -28,11 +29,10 @@ const InfiniteArticles = ({
 		optimisticDefaultMaxCount
 	);
 	const parentRef = useRef(null);
-	const searchRef = useRef<string | undefined>(undefined); // this has to be undefined
-	const tagRef = useRef<string | undefined>(undefined);
+	const queryRef = useRef<object>({}); // this has to be an empty object;
 	const margin = showTagSelector ? '160px' : '100px';
 
-	const { search, tag } = useMemo(
+	const query = useMemo(
 		() => queryString.parse(location.search),
 		[location.search]
 	);
@@ -47,8 +47,8 @@ const InfiniteArticles = ({
 		{
 			take: perPage,
 			skip: (page - 1) * perPage,
-			...(search ? { search: search as string } : {}),
-			...(tag ? { tags: tag } : {}),
+			...(query.search ? { search: query.search as string } : {}),
+			...(query.tag ? { tags: query.tag } : {}),
 		},
 		{
 			refetchOnMountOrArgChange: true,
@@ -64,26 +64,14 @@ const InfiniteArticles = ({
     results to append to the existing list I want to show a new list, but now all subsequent loads of this search term
     should append to this new list (wtf I hope it makes sense).
     */
-		if (search === searchRef.current) {
+		if (shallowEqual(query, queryRef.current)) {
 			if (data?.result) {
 				setCachedArticles((prevState) => [...prevState, ...data.result]);
 			}
-		}
-		if (search !== searchRef.current) {
+		} else {
 			if (data?.result) {
 				setCachedArticles(data.result);
-				searchRef.current = search as string;
-			}
-		}
-		if (tag === tagRef.current) {
-			if (data?.result) {
-				setCachedArticles((prevState) => [...prevState, ...data.result]);
-			}
-		}
-		if (tag !== tagRef.current) {
-			if (data?.result) {
-				setCachedArticles(data.result);
-				tagRef.current = tag as string;
+				queryRef.current = query;
 			}
 		}
 	}, [data, resetPage]);
@@ -93,9 +81,8 @@ const InfiniteArticles = ({
 	}, [isFetching]);
 
 	useEffect(() => {
-		if (search !== searchRef.current) resetPage(1);
-		if (tag !== tagRef.current) resetPage(1);
-	}, [search, searchRef, tag, tagRef]);
+		if (!shallowEqual(query, queryRef.current)) resetPage(1);
+	}, [query, queryRef]);
 
 	return (
 		<div
@@ -106,7 +93,7 @@ const InfiniteArticles = ({
 			ref={parentRef}
 		>
 			<div className={styles.articlesContainer}>
-				{search === searchRef.current &&
+				{shallowEqual(query, queryRef.current) &&
 					cachedArticles.map((article) => (
 						<div key={article.id}>
 							<ArticleCard article={article} />
