@@ -1,12 +1,11 @@
 import React, { type ReactNode } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { FormType } from '../../pages/auth/layout.tsx';
 import './sliding-form.css';
 
 type Props = {
 	children: ReactNode;
 	id: string;
-	selectedNode: FormType;
+	selectedNode: any;
 };
 
 const SlidingForm = ({ children, id, selectedNode }: Props) => {
