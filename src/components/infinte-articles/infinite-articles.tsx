@@ -88,7 +88,7 @@ const InfiniteArticles = ({
 		<div
 			style={{
 				overflow: 'scroll',
-				height: `calc(100vh - ${margin})`,
+				height: `calc(100dvh - ${margin})`,
 			}}
 			ref={parentRef}
 		>
