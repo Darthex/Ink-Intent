@@ -56,7 +56,12 @@ const ToolbarToggleGroup = ({ editor }: PropsWN) => {
 	};
 
 	return (
-		<ToggleGroup size="lg" type="multiple" value={activeActions}>
+		<ToggleGroup
+			size="lg"
+			type="multiple"
+			className="grid grid-cols-6 bt:flex"
+			value={activeActions}
+		>
 			<ToggleGroupItem
 				value={getValue(ACTIONS.BOLD)}
 				onClick={(e) => {

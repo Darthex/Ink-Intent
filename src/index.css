@@ -149,9 +149,8 @@ button {
 .ProseMirror {
 	padding: 10px;
 	background: transparent;
-	border-radius: 0 0 5px 5px;
 	max-height: 100%;
-	overflow: hidden;
+	font-weight: lighter;
 }
 
 .ProseMirror > * + * {
@@ -173,7 +172,7 @@ button {
 .ProseMirror h4,
 .ProseMirror h5,
 .ProseMirror h6 {
-	line-height: 1.1;
+	line-height: 0.4;
 }
 
 .ProseMirror code {
@@ -182,7 +181,6 @@ button {
 }
 
 .ProseMirror pre {
-	/*background: #0d0d0d;*/
 	background-color: #747bff;
 	color: #fff;
 	font-family: 'JetBrainsMono', monospace;

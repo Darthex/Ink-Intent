@@ -1,7 +1,8 @@
 .container {
-	/*background-color: #8f4e51;*/
-	height: 100%;
+	height: calc(100dvh - 160px);
 	min-width: 70%;
+	padding: 20px;
+	overflow: scroll;
 }
 
 .textSection,

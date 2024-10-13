@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react';
 import { type Location } from 'react-router-dom';
 import queryString from 'query-string';
-import cx from 'classnames';
+import { cn } from '../../lib/utils.ts';
 
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { Button } from '../ui/button.tsx';
@@ -19,14 +19,14 @@ const defaultTags = [
 	'Programming',
 	'Technology',
 	'Business',
-	// 'Entertainment',
-	// 'Education',
-	// 'Environment',
-	// 'Design',
-	// 'Personal',
-	// 'Finance',
+	'Entertainment',
+	'Education',
+	'Environment',
+	'Design',
+	'Personal',
+	'Finance',
 	// 'News & Politics',
-	// 'Sports',
+	'Sports',
 ];
 
 const TagSelector = ({ location }: { location: Location<any> }) => {
@@ -61,7 +61,7 @@ const TagSelector = ({ location }: { location: Location<any> }) => {
 	return (
 		<div className="w-[350px] lg:w-[700px] h-[40px] flex items-center relative">
 			<Button
-				className={styles.floatingButton}
+				className={cn('hidden md:inline-flex', styles.floatingButton)}
 				variant="ghost"
 				size="sm"
 				onClick={scrollLeft}
@@ -69,7 +69,11 @@ const TagSelector = ({ location }: { location: Location<any> }) => {
 				<ChevronLeft className="h-4 w-4" />
 			</Button>
 			<Button
-				className={cx(styles.floatingButton, styles.right)}
+				className={cn(
+					'hidden md:inline-flex',
+					styles.floatingButton,
+					styles.right
+				)}
 				variant="ghost"
 				size="sm"
 				onClick={scrollRight}
@@ -79,7 +83,7 @@ const TagSelector = ({ location }: { location: Location<any> }) => {
 			<div className={styles.scrollDiv} ref={scrollRef}>
 				<ToggleGroup
 					type="multiple"
-					className={styles.toggleGroup}
+					className="md:mx-[30px]"
 					value={[queryTag as string]} // lol why did I even use a toggle group
 				>
 					{tags.map((tag) => (

@@ -26,9 +26,12 @@ const Root = () => {
 	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const pageVisibility = ![ROUTES.HOME, ROUTES.AUTH].includes(
-		location.pathname
-	);
+	const pageVisibility = ![
+		ROUTES.HOME,
+		ROUTES.AUTH,
+		'/home/',
+		'/auth/',
+	].includes(location.pathname);
 
 	useEffect(() => {
 		validateSession(dispatch).then(() => setAutoLoginCheck(true));
@@ -58,16 +61,10 @@ const Root = () => {
 				<Routes>
 					<Route path={ROUTES.HOME} element={<Home />} />
 					<Route path={ROUTES.AUTH} element={<AuthLayout />} />
+					<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+					{isAuthenticated && <Route path={ROUTES.WRITE} element={<Write />} />}
+					<Route path="*" element={<span>Not Found</span>} />
 				</Routes>
-				<div className="app-layout">
-					<Routes>
-						<Route path="*" element={<span>Not Found</span>} />
-						<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-						{isAuthenticated && (
-							<Route path={ROUTES.WRITE} element={<Write />} />
-						)}
-					</Routes>
-				</div>
 			</>
 		</>
 	);
