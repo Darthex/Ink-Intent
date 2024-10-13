@@ -7,6 +7,7 @@ import { RootState } from './redux-tlkt/store.ts';
 import Home from './pages/home/home.tsx';
 import Dashboard from './pages/dashboard/dashboard.tsx';
 import AuthLayout from './pages/auth/layout.tsx';
+import Read from './pages/read/read.tsx';
 import Write from './pages/write/write-new.tsx';
 import Header from './components/header/header.tsx';
 import { Toaster } from './components/ui/sonner.tsx';
@@ -62,6 +63,7 @@ const Root = () => {
 					<Route path={ROUTES.HOME} element={<Home />} />
 					<Route path={ROUTES.AUTH} element={<AuthLayout />} />
 					<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+					<Route path={ROUTES.READ} element={<Read />} />
 					{isAuthenticated && <Route path={ROUTES.WRITE} element={<Write />} />}
 					<Route path="*" element={<span>Not Found</span>} />
 				</Routes>

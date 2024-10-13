@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
 	Card,
 	CardContent,
@@ -12,14 +14,20 @@ import { Article } from '../../redux-tlkt/api-injections/article/article.ts';
 import { getFormattedTime } from '../../utils/time.ts';
 
 import styles from './article-card.module.css';
+import { ROUTES } from '../../constants/routes.ts';
 
 type Props = {
 	article: Article;
 };
 
 const ArticleCard = ({ article }: Props) => {
+	const navigate = useNavigate();
+
 	return (
-		<Card className="w-[350px] lg:w-[700px] ">
+		<Card
+			className="w-[350px] lg:w-[700px] cursor-pointer"
+			onClick={() => navigate(ROUTES.getReadRoute(article.id))}
+		>
 			<CardHeader>
 				<CardTitle>{article.title}</CardTitle>
 				<CardDescription>
@@ -33,7 +41,7 @@ const ArticleCard = ({ article }: Props) => {
 					<span>{article.description}</span>
 					<div className={styles.cover}>
 						<img
-							src={article.cover ?? defaultCover}
+							src={article.cover || defaultCover}
 							alt="cover"
 							className={styles.image}
 						/>

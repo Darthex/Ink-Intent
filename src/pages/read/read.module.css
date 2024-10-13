@@ -1,0 +1,39 @@
+.container {
+	height: calc(100dvh - 100px);
+	min-width: 70%;
+	padding: 0 20px;
+	overflow: scroll;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+.cover {
+	display: flex;
+	align-items: center;
+	pointer-events: none;
+}
+
+.image {
+	aspect-ratio: 16/9;
+	object-fit: cover;
+	color: black;
+	opacity: 0.2;
+}
+
+.details {
+	position: absolute;
+	left: 0;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	overflow: hidden;
+}
+
+.time {
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	color: darkgray;
+}

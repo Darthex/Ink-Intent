@@ -1,5 +1,9 @@
-import api, { DO_NOT_CACHE_DATA } from '../../api.ts';
-import { PUBLISH_ARTICLE, GET_ARTICLES } from '../../../constants/endpoints.ts';
+import api, { KEEP_UNUSED_DATA_FOR_LONG_TIME } from '../../api.ts';
+import {
+	PUBLISH_ARTICLE,
+	GET_ARTICLES,
+	getSingleArticleByID,
+} from '../../../constants/endpoints.ts';
 
 type Params = {
 	skip?: number;
@@ -44,10 +48,19 @@ const extendedApi = api
 					url: GET_ARTICLES,
 					params: params,
 				}),
-				keepUnusedDataFor: DO_NOT_CACHE_DATA,
 				providesTags: [ARTICLE_TAG],
+			}),
+			getSingleArticle: builder.query<Article, string>({
+				query: (id) => ({
+					url: getSingleArticleByID(id),
+				}),
+				keepUnusedDataFor: KEEP_UNUSED_DATA_FOR_LONG_TIME,
 			}),
 		}),
 	});
 
-export const { usePublishMutation, useGetArticlesQuery } = extendedApi;
+export const {
+	usePublishMutation,
+	useGetArticlesQuery,
+	useGetSingleArticleQuery,
+} = extendedApi;

@@ -3,4 +3,6 @@ export const ROUTES = {
 	DASHBOARD: '/',
 	AUTH: '/auth',
 	WRITE: '/write',
+	READ: '/read/:id',
+	getReadRoute: (articleId: string) => `/read/${articleId}`,
 };
