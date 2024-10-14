@@ -65,7 +65,7 @@ const Header = () => {
 						<Quill />
 					</Button>
 				)}
-				{isReadPage && isMyArticle && (
+				{isReadPage && isMyArticle && isAuthenticated && (
 					<Button onClick={() => navigate(ROUTES.getEditRoute(articleID))}>
 						Edit
 					</Button>
