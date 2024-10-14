@@ -11,7 +11,7 @@ import styles from './read.module.css';
 
 const Read = () => {
 	const { id } = useParams();
-	const { data, isFetching } = useGetSingleArticleQuery(id ?? '', {
+	const { data, isFetching } = useGetSingleArticleQuery(id!, {
 		skip: !id,
 	});
 
@@ -24,7 +24,7 @@ const Read = () => {
 					<div className="relative">
 						<div className={styles.cover}>
 							<img
-								src={data?.cover || defaultCover}
+								src={(data?.cover as string) || defaultCover}
 								alt="Image"
 								className={styles.image}
 							/>
@@ -39,7 +39,9 @@ const Read = () => {
 							</div>
 						</div>
 					</div>
-					{data?.content && <Tiptap editable={false} content={data?.content} />}
+					{data?.content && (
+						<Tiptap editable={false} content={data?.content} reloadOnChange />
+					)}
 				</>
 			)}
 		</div>
