@@ -1,7 +1,7 @@
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent, useMemo } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 
-import { usePublishMutation } from '../../redux-tlkt/api-injections/article/article.ts';
+import { useUpdateMutation } from '../../redux-tlkt/api-injections/article/article.ts';
 
 import { Button } from '../ui/button.tsx';
 import Modal from '../modal/modal.tsx';
@@ -17,6 +17,8 @@ type Props = {
 	};
 	article: string;
 	navigate: NavigateFunction;
+	formData: Form;
+	id?: string;
 };
 
 const EMPTY_ARTICLE = '<p></p>';
@@ -35,25 +37,29 @@ const initForm: Form = {
 	tags: [],
 };
 
-const QuillPublisher = ({ user, article, navigate }: Props) => {
-	const [publishForm, setPublishForm] = useState(initForm);
+const QuillUpdater = ({ user, article, navigate, formData, id }: Props) => {
+	const [publishForm, setPublishForm] = useState(formData);
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
-	const [triggerPublish, { isLoading, isSuccess, isError, error }] =
-		usePublishMutation();
-
+	const [triggerUpdate, { isLoading, isSuccess, isError, error }] =
+		useUpdateMutation();
+	const initialFetchedArticleState = useMemo(() => article, []);
 	const disableModal =
-		article?.trim().length < 1 || article === EMPTY_ARTICLE || isLoading;
+		article?.trim().length < 1 ||
+		article === EMPTY_ARTICLE ||
+		initialFetchedArticleState === article ||
+		isLoading;
 
-	const publishArticle = () => {
-		triggerPublish({
+	const updateArticle = () => {
+		triggerUpdate({
+			articleId: id!,
 			article: {
-				title: publishForm.title,
-				description: publishForm.description,
-				cover: publishForm.cover,
+				title: publishForm?.title,
+				description: publishForm?.description,
+				cover: publishForm?.cover,
 				content: JSON.stringify(article),
 				owner_id: user.id,
 				owner_name: user.username,
-				tags: publishForm.tags,
+				tags: publishForm?.tags,
 			},
 		});
 	};
@@ -90,7 +96,7 @@ const QuillPublisher = ({ user, article, navigate }: Props) => {
 	const renderModalTrigger = () => {
 		return (
 			<Button variant="destructive" disabled={disableModal}>
-				Publish
+				Save
 			</Button>
 		);
 	};
@@ -111,16 +117,16 @@ const QuillPublisher = ({ user, article, navigate }: Props) => {
 		if (isSuccess) {
 			createToast({
 				type: 'success',
-				title: 'Your Article has been published.',
+				title: 'Your Article has been updated.',
 				actionLabel: 'Ok',
 			});
 			setPublishForm(initForm);
-			navigate(ROUTES.DASHBOARD);
+			navigate(ROUTES.getReadRoute(id!));
 		}
 		if (isError) {
 			createToast({
 				type: 'error',
-				title: `Couldn't publish article, try again.`,
+				title: `Couldn't update article, try again.`,
 				description: generateError(error),
 				actionLabel: 'Ok',
 			});
@@ -132,8 +138,8 @@ const QuillPublisher = ({ user, article, navigate }: Props) => {
 			trigger={renderModalTrigger()}
 			title="Ready to publish?"
 			description="Please mention a fitting title and description for your article. You can also upload a cover image."
-			onClick={publishArticle}
-			footer="Publish"
+			onClick={updateArticle}
+			footer="Save"
 			body={renderModalBody()}
 			loading={isLoading}
 			disabled={!publishForm.title || !publishForm.description}
@@ -141,4 +147,4 @@ const QuillPublisher = ({ user, article, navigate }: Props) => {
 	);
 };
 
-export default QuillPublisher;
+export default QuillUpdater;

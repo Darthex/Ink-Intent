@@ -1,6 +1,6 @@
 type Entity = [] | object;
 
-type IndexableObject = {
+export type IndexableObject = {
 	[key: string]: any;
 };
 

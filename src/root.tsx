@@ -27,7 +27,7 @@ const Root = () => {
 	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const pageVisibility = ![
+	const headerVisibility = ![
 		ROUTES.HOME,
 		ROUTES.AUTH,
 		'/home/',
@@ -58,13 +58,18 @@ const Root = () => {
 		<>
 			<Toaster />
 			<>
-				{pageVisibility && <Header />}
+				{headerVisibility && <Header />}
 				<Routes>
 					<Route path={ROUTES.HOME} element={<Home />} />
 					<Route path={ROUTES.AUTH} element={<AuthLayout />} />
 					<Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
 					<Route path={ROUTES.READ} element={<Read />} />
-					{isAuthenticated && <Route path={ROUTES.WRITE} element={<Write />} />}
+					{isAuthenticated && (
+						<>
+							<Route path={ROUTES.WRITE} element={<Write />} />
+							<Route path={ROUTES.EDIT} element={<Write isEdit />} />
+						</>
+					)}
 					<Route path="*" element={<span>Not Found</span>} />
 				</Routes>
 			</>

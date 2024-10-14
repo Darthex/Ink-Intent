@@ -1,4 +1,7 @@
-import api, { KEEP_UNUSED_DATA_FOR_LONG_TIME } from '../../api.ts';
+import api, {
+	DO_NOT_CACHE_DATA,
+	KEEP_UNUSED_DATA_FOR_LONG_TIME,
+} from '../../api.ts';
 import {
 	PUBLISH_ARTICLE,
 	GET_ARTICLES,
@@ -19,7 +22,8 @@ export type Article = {
 	owner_name: string;
 	title: string;
 	description: string;
-	cover: string | null;
+	cover: string | ArrayBuffer | null;
+	tags: string[];
 };
 
 type ArticleResponse = {
@@ -28,10 +32,11 @@ type ArticleResponse = {
 };
 
 const ARTICLE_TAG = 'article/invalidate_existing_cache';
+const UPDATE_TAG = 'article/update_existing_cache';
 
 const extendedApi = api
 	.enhanceEndpoints({
-		addTagTypes: [ARTICLE_TAG],
+		addTagTypes: [ARTICLE_TAG, UPDATE_TAG],
 	})
 	.injectEndpoints?.({
 		endpoints: (builder) => ({
@@ -43,11 +48,25 @@ const extendedApi = api
 				}),
 				invalidatesTags: [ARTICLE_TAG],
 			}),
+			update: builder.mutation<
+				any,
+				{ articleId: string; article: Omit<Article, 'id' | 'created_at'> }
+			>({
+				query: ({ articleId, article }) => ({
+					url: getSingleArticleByID(articleId),
+					method: 'PUT',
+					body: article,
+				}),
+				invalidatesTags: ({ articleId }) => [
+					{ type: UPDATE_TAG, id: articleId },
+				],
+			}),
 			getArticles: builder.query<ArticleResponse, Params>({
 				query: (params) => ({
 					url: GET_ARTICLES,
 					params: params,
 				}),
+				keepUnusedDataFor: DO_NOT_CACHE_DATA,
 				providesTags: [ARTICLE_TAG],
 			}),
 			getSingleArticle: builder.query<Article, string>({
@@ -55,12 +74,17 @@ const extendedApi = api
 					url: getSingleArticleByID(id),
 				}),
 				keepUnusedDataFor: KEEP_UNUSED_DATA_FOR_LONG_TIME,
+				providesTags: (data) =>
+					data?.id
+						? [{ type: UPDATE_TAG, id: data.id }]
+						: [{ type: UPDATE_TAG, id: 'UPDATE_TAG' }],
 			}),
 		}),
 	});
 
 export const {
 	usePublishMutation,
+	useUpdateMutation,
 	useGetArticlesQuery,
 	useGetSingleArticleQuery,
 } = extendedApi;

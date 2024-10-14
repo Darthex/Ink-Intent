@@ -26,7 +26,7 @@ const Home = () => {
 	}, []);
 
 	return (
-		<div className="container">
+		<div className="homeContainer">
 			<div className="background"></div>
 			<div className="action-buttons">
 				<BubbleLink onClick={() => navigate(ROUTES.AUTH)}>Login</BubbleLink>

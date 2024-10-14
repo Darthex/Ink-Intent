@@ -5,17 +5,11 @@ import Toolbar from './toolbar.tsx';
 
 const extensions = [StarterKit, Underline];
 
-type Props =
-	| {
-			onChange: (newContent: string) => void;
-			editable?: true;
-			content?: undefined;
-	  }
-	| {
-			onChange?: undefined;
-			editable: false;
-			content: string;
-	  };
+type Props = {
+	onChange?: (newContent: string) => void;
+	editable?: boolean;
+	content?: string;
+};
 
 const Tiptap = ({ onChange, editable = true, content }: Props) => {
 	const editor = useEditor({

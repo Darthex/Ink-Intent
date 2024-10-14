@@ -17,6 +17,7 @@ const baseQuery: BaseQueryFn = async (arg) => {
 	axios.defaults.headers.common['Accept'] = 'application/json';
 	axios.defaults.headers.common['Authorization'] = authToken;
 	axios.defaults.headers.post['Content-Type'] = 'application/json';
+	axios.defaults.headers.put['Content-Type'] = 'application/json';
 
 	const axiosOptions = {
 		...baseFetchOptions,
@@ -34,10 +35,15 @@ const baseQuery: BaseQueryFn = async (arg) => {
 		});
 		return { data: rawResponse?.data };
 	} catch (e: any) {
-		return {
-			errorCode: e.response?.status,
-			error: e.response?.data?.detail,
-		};
+		return e.code === 'ERR_NETWORK'
+			? {
+					errorCode: 500,
+					error: 'Server error.',
+				}
+			: {
+					errorCode: e.response?.status,
+					error: e.response?.data?.detail,
+				};
 	}
 };
 

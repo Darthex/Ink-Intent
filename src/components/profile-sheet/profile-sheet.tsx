@@ -71,7 +71,7 @@ const ProfileSheet = ({ isAuthenticated, user, navigate }: Props) => {
 				<Button
 					variant="link"
 					className={styles.footerButton}
-					onClick={() => navigate(ROUTES.AUTH)}
+					onClick={() => navigate(ROUTES.AUTH, { replace: true })}
 				>
 					<Logout />
 					Logout
