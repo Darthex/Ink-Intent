@@ -41,7 +41,7 @@ const ArticleCard = ({ article }: Props) => {
 					<span>{article.description}</span>
 					<div className={styles.cover}>
 						<img
-							src={article.cover || defaultCover}
+							src={(article.cover as string) || defaultCover}
 							alt="cover"
 							className={styles.image}
 						/>
